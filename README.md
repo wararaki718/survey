@@ -7,4 +7,3 @@
 ### 進捗報告スライド
 
 https://gitpitch.com/wararaki/data_bias
-

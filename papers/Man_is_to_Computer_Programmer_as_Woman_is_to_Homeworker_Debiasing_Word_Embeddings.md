@@ -60,7 +60,7 @@ debiasing algorithm について２つステップから構成されている。
 1. 部分空間からベクトルを捉える方法。
     1. identify gender subspace
 2. 削減する方法
-    1. neutralize and equalize 
+    1. neutralize and equalize
     2. soften
 
 3. 偏見的な単語について
