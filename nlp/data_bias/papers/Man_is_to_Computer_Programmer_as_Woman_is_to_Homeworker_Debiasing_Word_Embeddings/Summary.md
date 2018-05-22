@@ -12,11 +12,15 @@
 
 ---
 
-## Preliminary
+## 3.Preliminary
 
-- gender neutoral words
-  - 性差別に関連する単語の辞書
-- cos類似度の紹介
+- 使用しているembeddingについての説明
+  - one-hot vectorを入れる。
+  - gender neutoral wordsの定義
+    - 性差別に関連する単語の辞書（flight attendant, shoesなど）
+  - she-heのペアのデータを作って、これを評価する。
+    - 作り方は7章参照
+- 類似する単語を拾ってくるのに、cos類似度を使用。
 
 ### Embedding
 
@@ -30,7 +34,7 @@
     - upper-case
     - 数字
     - 句読点
-- 性の偏見のデータセットも与える。（gender stereotypes are also present in other embedding data-sets）
+- 一般性は失ってないぜ。（gender stereotypes are also present in other embedding data-sets）
 
 ### Crowd Experiments
 
@@ -44,3 +48,30 @@
 - 10人で多数決。半分以上でアノテーション。
 
 あとは、文化や人種も考慮して、不快に思わないバイアスを用意している。
+
+## 4.Gender stereotypes in word embeddings
+
+仮説
+
+- w2vにあるバイアスを理解する
+- 人の意見と数値バイアスがどれくらい近いのかを調べる
+
+２つの方法で評価できる。
+
+- embeddingが持つ、occupation wordsの偏見を評価する。
+- embeddingが出したアナロジーに対して人が偏見かどうか判断する。
+
+探索的な分析をして次のmetricsのモチベーションにつなげる
+
+Figure.1 Glove使ったときのshe-heのペア一覧。</br>
+Figure.2 類推で出て来る結果と、debiasingした結果</br>
+Figure.3 間接バイアスの例</br>
+Figure.4 どのembeddingでも同じような傾向が出る。</br>
+
+### Occupational stereotype
+
+Figure.1のような一覧をcrowdworkerで評価する。
+
+### Analogies exhibiting stereotypes
+
+### Indirect gender bias
