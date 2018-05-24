@@ -5,3 +5,4 @@
 ## 資料
 
 - https://github.com/wnzhang/rtb-papers
+- https://www.slideshare.net/masakazusano75/sano-tokyowebmining-201625v04
