@@ -6,3 +6,13 @@
 
 - https://github.com/wnzhang/rtb-papers
 - https://www.slideshare.net/masakazusano75/sano-tokyowebmining-201625v04
+
+## 参考文献が多い主な学会
+
+- KDD (ADKDD)
+- ICDM
+- RecSys
+- WSDM
+- HEPML
+- ECIR
+- CIKM
