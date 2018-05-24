@@ -72,17 +72,47 @@ Figure.4 どのembeddingでも同じような傾向が出る。</br>
 
 職業のstereotypeについて、定義とその説明を行う。
 
-男性と女性でword2vecで近しい職業をリスト化する。
-そのリストをcrowdworkerに男性よりか、女性よりかそれともニュートラルか評価してもらう。10人のcrowdworkerによってgender stereotypeを評価する。評価について、0-10の幅でレートを付ける。
-男女軸で職業ワードを見積もると、Spearman係数0.5で、強い相関が見られた。
-このことから、w2vの幾何学的バイアスは、一般群衆のgender stereotypeも調整されているといえる。そこで、相関があるこの職業単語を使うことにする、なぜなら人が簡単に解釈できて、共通のgender stereotypeを捉えることができるから。
-また、stereotypeではない他の単語もタスクでつかう。気づいてほしいのは、たとえば womanとmanのような性別のペアが使用できる。sheとheを選んだのは、よく出て来る単語で、語義（単語の意味）の変化があまりないから選んだ。manとwomanも同じ理由で使うことができる。
+Occupational stereotypeを決めに行く話。
 
-職業ごとの上のshe-heの向きを、Word2VecのembeddingとGloVeのembeddingで見積もってみた。結果、高い相関が見られたので、embeddingが変わっても偏見を持つし、古典的なコーパス訓練やword2vecに限った話ではないといえる。
+男性と女性でword2vecで近しい職業をリスト化したものを使う。
+
+- そのリストをcrowdworkerに男性よりか、女性よりか、それともニュートラルか評価してもらう。
+- 10人のcrowdworkerによってgender stereotypeを評価する。
+  - 評価について、0-10の幅でレートを付ける。
+  - 男女軸で職業ワードを見積もると、Spearman係数0.5で、強い相関が見られた。
+    - このことから、w2vの幾何学的バイアスは、一般群衆のgender stereotypeも調整されているといえる。
+    - そこで、相関があるこの職業単語を使うことにする、なぜなら人が簡単に解釈できて、共通のgender stereotypeを捉えることができるから。
+- また、stereotypeではない他の単語もタスクでつかう。
+  - 気づいてほしいのは、たとえば womanとmanのような性別のペアが使用できる。
+  - sheとheを選んだのは、よく出て来る単語で、語義（単語の意味）の変化があまりないから選んだ。manとwomanも同じ理由で使うことができる。
+
+職業ごとの上のshe-heの向きを、Word2VecのembeddingとGloVeのembeddingで見積もってみた。結果、高い相関が見られたので、embeddingが変わっても偏見を持つし、古典的なコーパス訓練やword2vecに限った話ではないといえる。
 
 Glove
 - J. Pennington, R. Socher, and C. D. Manning. Glove: Global vectors for word representation. In EMNLP, 2014.
 
 ### Analogies exhibiting stereotypes
+
+- 類推は、word embeddingの質とその偏見の評価をするのに役立つ。
+- embeddingで類推を生成する方法と、その類推を使って偏見の規模を測る方法について話す。　（細かな話は appendinx Aを参照）
+- 単語のペアを１組与えて、そのペアと対応する単語セットを生成してもらう。
+  - 例えば、he-sheが与えられたら、heに対応する単語xとsheに対応する単語yを生成して評価する。
+  - 一般的に、例えば、he-sheとking-(?)が与えられたとき、(?)の単語を推定してもらう仕組みがあるが、ここでは上記の例のように修正した。
+- もととなる単語のペア（a, b）と生成された単語のペア（x, y）があるとき、以下の以下の計算式でスコアリングする。
+  - コサイン類似度
+
+![analogies_exhibiting_stereotype_scoring](img/analogies_exhibiting_stereotype_scoring.png)
+
+- δ : 類似度の閾値（２つの単語の距離の閾値）
+- 直感的なスコアリングの指標として、２つのペア同士の向きを近さを見る。
+  - 意味的に明確にするために、２つの単語が離れすぎないようにする。
+- 閾値 δ について
+  - 全実験で、δ=1をよく使った。
+  - 全embeddingが正規化されると、閾値は angle<=π/3 に相当する。これはオリジナルのペアよりも近いと意味する。
+  - 実際にランダムな2つのembeddingのベクトルよりも、類推で構成された単語ペアのほうが著しく近似しているといえる。
+- embeddingと種となる単語が与えられたとき、トップスコアの類推ペアを出力する。
+  - 同じ単語が出た場合、余分なものとして削除する。
+
+Sinceから.
 
 ### Indirect gender bias
