@@ -89,6 +89,7 @@ Occupational stereotypeを決めに行く話。
 職業ごとの上のshe-heの向きを、Word2VecのembeddingとGloVeのembeddingで見積もってみた。結果、高い相関が見られたので、embeddingが変わっても偏見を持つし、古典的なコーパス訓練やword2vecに限った話ではないといえる。
 
 Glove
+
 - J. Pennington, R. Socher, and C. D. Manning. Glove: Global vectors for word representation. In EMNLP, 2014.
 
 ### Analogies exhibiting stereotypes
@@ -113,6 +114,35 @@ Glove
 - embeddingと種となる単語が与えられたとき、トップスコアの類推ペアを出力する。
   - 同じ単語が出た場合、余分なものとして削除する。
 
-Sinceから.
+類推の判定結果について
+
+- stereotypeやbiasは文化から大きく影響される。
+  - 今回の実験で雇ったUSのcrowdworkerの類推の評価に基づくと。
+- 各類推について、2つのyes/no questionを出題した。
+  - 出力された単語のペアが直感的かどうか？
+  - gender stereotypeを反映しているか？
+- 各類推の判定は１０人のcrowdworkerが行う。
+  - 判定の人数がそのままrateとして反映する。
+- 全体的に、150の類推のうち72のペアが、性別的にふさわしいと判定された。(5人以上の評価がある。)
+  - 図（リスト）の説明
+    - 生成された偏見性が見られる類推の評価を Figure.2のトップに
+    - 直感的に作成した性別的にふさわしい類推の評価を Figure.2の下部に置く。
+    - リスト全体の類推とレーティングについては、Appendix Gで詳しく紹介。
 
 ### Indirect gender bias
+
+- 直接的なbiasを分析すると、性別の特性を持つ単語とgender neutral wordで類似性がはっきりと現れる。
+- gender biasも gender neutral words との間で幾何学的にも影響がある。
+- indirect gender biasのテストについて
+  - gender neutral wordsでペアを作る。（例えば、softballとfootball）
+  - 全職業ワードをgender neutral wordsで作成したペアの向きに反映させる。
+  - 反映させたワードから、近しい単語を見つける。（Fig.3参照）
+
+例
+
+- bookkeeperとreceptionistは、footballよりもsoftballに近しい。
+- 近しいことから、間接的に bookkeeper, receptionist, softballは女性から連想される。
+  - ここで大切なことは、多くのペア（男性的or女性的偏見を含む）は論理的に性を連想させるような処理はしていないことに注目してほしい。
+  - たとえば、footballとfootballerは男性のバイアスが強いが、生徒は別の要因で類似性を正当化する。(section5で、計測方法とgender biasへの間接的な効果について詳しく説明する。)
+
+## Geometry of Gender and Bias
