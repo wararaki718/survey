@@ -24,6 +24,7 @@ Part1だけ読んだが、RTB systemの仕組みの説明と、機械学習の�
 - User response estimation
   - CTR推定についてはここにかかれている。
 - Learning to bid
+
 - Conversion attribution
 - Pacing control
 - Targeting and audience expansion
