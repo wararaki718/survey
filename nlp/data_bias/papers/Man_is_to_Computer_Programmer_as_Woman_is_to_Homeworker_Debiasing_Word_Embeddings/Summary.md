@@ -228,3 +228,14 @@ Figure.6
 ![figure.3](img/figure.3.png)
 
 - introductionで議論したように、類似性がgenderに起因するという真実の根拠を得ることは、微妙である可能性がある。
+
+- 識別された gender subspace **g** は、任意の単語のペアの類似度が　**g** への貢献を定量化することを許可する。
+
+- 与えられた単語ベクトル **w ∈ R_d** を **w_g + w⊥** として分解できる。
+  - ここで、**w_g = (w・g)g** としたとき、貢献度を **w⊥ = w - w_g** とする。
+    - 注意してほしいのが、全word vectorは単位の長さに正規化されている（単位の長さとは?）
+  - gender components を類似したも word vector **w** と **v** で定義すると、以下の式で表現できる。
+
+![word_vector_similarity](img/word_vector.png)
+
+- 数式の説明
