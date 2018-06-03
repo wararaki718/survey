@@ -230,7 +230,6 @@ Figure.6
 - introductionで議論したように、類似性がgenderに起因するという真実の根拠を得ることは、微妙である可能性がある。
 
 - 識別された gender subspace **g** は、任意の単語のペアの類似度が　**g** への貢献を定量化することを許可する。
-
 - 与えられた単語ベクトル **w ∈ R_d** を **w_g + w⊥** として分解できる。
   - ここで、**w_g = (w・g)g** としたとき、貢献度を **w⊥ = w - w_g** とする。
     - 注意してほしいのが、全word vectorは単位の長さに正規化されている（単位の長さとは?）
@@ -238,4 +237,65 @@ Figure.6
 
 ![word_vector_similarity](img/word_vector.png)
 
-- 数式の説明
+- 数式について
+  - **(w⊥ v⊥)/(|w⊥|_22 |v⊥|_2)** は２つのベクトルの内積。
+    - これは、gender subspaceから突き出たベクトルを、再正規化する。
+    - この計測法は、gender 部分空間を除去する操作のために、内積がどれくらい（元の内積値のいち部として）変化するかを定量化する。
+    - データにノイズがあるため、各ベクトルは 0 ではない要素 **w⊥** を持つ ＆ **β** は定義される。
+    - **β(w, v)=0**のとき、よく似た単語が理由で 0 になっている。（性別が理由ではない。）
+    - もし、**w_g = 0 = v_g** は **β(w,v)=0**になり。**w⊥ = 0 = v⊥** は **β(w,v)=1** になる。
+
+- Figure.3 の事例では、最も極端な単語でfootballとsoftballの向きを調べた。
+  - ５つの極端な単語（高ポジティブまたは低ネガティブを反映した football - softballに関連する単語。）をテーブルに表示した。
+  - 受付やウエイトレス、専業主婦などの単語はfootballよりもsoftballのほうが近い。
+  - **β** の数値では、これらの単語とsoftballは実質、67%、35%、38%だった。
+  - これは、これらの言葉の softball の embedding 上の見せかけの類似性は、embeddingにおける gender bias によって大きく説明できることを示唆している。
+  - businessmanとmaestroはfootballに近いが、これもindirect biasによるものが大きく、**β** の数値はそれぞれ 31% と 42% だった。
+
+![figure.3](img/figure.3.png)
+
+## 6.Debiasing algorithms
+
+- debiasing algorithm は、単語のペアではなく単語の集合で定義されるので、人種や宗教的な bias のような他の bias も考慮できる。
+- 中和できる単語の集合を持っていると仮定できる。
+  - 単語は、リストや第７章で説明する embedding からくるものとする。
+  - 多くの場合、この集合をより小さくするように、中和できない gender 固有の単語をリスト化するほうが簡単。
+
+- ２つのステップで debiasingをおこなう。
+  - 1st step
+    - gender subspace を認識する。
+    - これは、embedding の向きを確認して bias を捉える。
+  - 2nd step
+    - **Neutralize and Equalize** or **Softn** の２つのオプションを定義する。
+    - **Neutralize**
+      - gender subspace 内で 0 となる gender neutral word を確保する。
+    - **Equalize**
+      - 部分集合の外の集合と完全に等しくする。
+      - 等距離のneutral wordの属性に対して、各同一の集合の全単語と強制的に同一にする。
+        - 例えば、{grandmother, grandfather}と{guy, gal}の２つの同一の集合があるとき、babysitに同一化された後、{grandmother、grandfather}と{guy, gal}は同距離のままになっている。しかし、おそらく galやguyよりもgrandparentsのほうが近くなっている。
+        - これは、そのようなペアが neutral word を配慮して、いろんな bias を表示したくないアプリケーションに適している。
+      - Equalizeの不利益な点は、アプリケーションに役立つような確実な区別を削除してしまうこと
+        - 例えば、高確率でgrandmotherよりもgrandfatherの表現が割り当てられた言語モデルを望むようであれば、これは grandfather が grandmother と平等の意味を持っていないので、この区別を取り除く。
+    - **Soften**
+      - Softenアルゴリズムは、できるだけ元のembeddingの類似性を保ちながら、これらの集合の差を削減する
+      - これを制御するパラメータとトレードオフの関係である。
+  - アルゴリズムを定義する。いくつかの表記法を導入すると便利。
+    - subspace **B** は、k個の直行の単一ベクトルで **B={b_1,...,b_k}⊂R^d** で定義される。
+    - k = 1 のとき、部分空間は単純な向きになる。
+    - ベクトル **v** を部分空間 **B** に投影するとき、以下の式になる。
+
+![simple_direction](img/simple_direction_subspace.png)
+
+- これは、**v-v_B**が直行部分空間上に投影されていることを意味する。
+
+### Step 1: Identify gender subspace
+
+### Step 2a: Hard de-biasing (neutralize and equalize)
+
+### Step 2b: Soft bias correction
+
+## 7.Determining gender neutral words
+
+## 8.Debiasing results
+
+## 9.Discussion
