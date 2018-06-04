@@ -290,7 +290,46 @@ Figure.6
 
 ### Step 1: Identify gender subspace
 
+- gender subspace を明らかにする。
+- 各集合の平均を以下の式で求める。
+  - word set: **W**
+  - defining sets: **D_1, D_2,...D_n ⊂ W**
+    - embedding **\{w ∈ R^d\}_w∈W** と同様。
+  - 整数値 **k >= 1**
+
+![mean](img/mean.png)
+
+- bias subspace を **B** としたとき、SVD(C)の最初の **k** 番目の行を以下のようにする
+
+![svd_calc](img/svd_calc.png)
+
 ### Step 2a: Hard de-biasing (neutralize and equalize)
+
+- neutralizeと同一化を行う。
+- additional neutralize word set: **N ⊆ W**
+- family of equality sets: **ε = {E_1,E_2,...,E_m}**
+  - 各 E_i は **W** に属する。
+- 各 **w ∈ N** に対して、**w** を再 embedding すると
+
+![re_embedding](img/re_embedding.png)
+
+- 各集合 **E ∈ ε** は以下の通り、
+
+![set_e](img/re_embedding2.png)
+
+- 最終的に、部分空間 **B** と新しい embedding **\{w ∈ R^d\}** が出力される。
+
+- **B** の外にある単語の集合は、単純な平均 **v** と単一の長さによるベクトルの調整で、等しく同一化する。
+  - ２つの因子 **w_B** と **w⊥B=w-w_B** に分けることを想像すると、簡単に理解できる。
+  - 後者の **w⊥B** は、平均ですべて同一化する。
+- 私達がなぜ中心にいるかを動機づけるために、機械学習では一般的だという事実を越えて、バイアスの方向 (k=1)とE={male, female}のような性別のペアを考える。
+  - 議論したように、両方の単語は、性の方向では positive(female)であるものは、femaleが大きな影響を持っていることが起因している。
+  - このようなことについて、例えば、男性の看護師や、男性の護衛、女性が男性のによって暴行を受けているなどのテキストが頻出などの理由から推測できる。
+  - しかしながら、femaleは性の因子を強く持つので、両者を中心にした後、原点から対象的にバランスが取れている。
+  - 代わりに、centering なしでベクトルの因子をバイアスの方向に拡張した場合、maleとfemaleは確実に同じ embedding を持ち、father-male や mother-female のような類推が失われる。
+- soften の代替手法を定義する前に、neutralizing と equalizing で完全にペアのバイアスを取り除くことに注意したい。
+
+#### Observation 1
 
 ### Step 2b: Soft bias correction
 
