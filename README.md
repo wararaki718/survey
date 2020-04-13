@@ -1,10 +1,7 @@
-# survey
+# survey and research
 
-読んだ論文をメモ</br>
-主なテーマは
+## Theme
 
-- 自然言語処理
-- Web関連の機械学習
-- 深層学習関連
-
-などなど
+- NLP
+- IR
+- Recommender Systems
